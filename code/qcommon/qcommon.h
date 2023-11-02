@@ -163,6 +163,10 @@ typedef enum {
 	NA_LOOPBACK,
 	NA_BROADCAST,
 	NA_IP,
+#ifdef USE_IPX
+	NA_IPX
+	NA_BROADCAST_IPX,
+#endif
 #ifdef USE_IPV6
 	NA_IP6,
 	NA_MULTICAST6,

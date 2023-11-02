@@ -4221,6 +4221,12 @@ static void CL_ServerInfoPacket( const netadr_t *from, msg_t *msg ) {
 				case NA_IP:
 					type = 1;
 					break;
+#ifdef USE_IPX
+				case NA_BROADCAST_IPX:
+				case NA_IPX:
+					type = 2;
+					break;
+#endif
 #ifdef USE_IPV6
 				case NA_IP6:
 					type = 2;
@@ -4507,6 +4513,12 @@ static void CL_LocalServers_f( void ) {
 
 			to.type = NA_BROADCAST;
 			NET_SendPacket( NS_CLIENT, n, message, &to );
+
+#ifdef USE_IPX
+			to.type = NA_BROADCAST_IPX;
+			NET_SendPacket( NS_CLIENT, n, message, &to );
+#endif
+
 #ifdef USE_IPV6
 			to.type = NA_MULTICAST6;
 			NET_SendPacket( NS_CLIENT, n, message, &to );

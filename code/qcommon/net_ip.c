@@ -516,6 +516,16 @@ qboolean NET_CompareBaseAdrMask( const netadr_t *a, const netadr_t *b, unsigned 
 		if (netmask > 32)
 			netmask = 32;
 	}
+#ifdef USE_IPX
+	else if (a->type == NA_IPX)
+	{
+		if ((memcmp(a->ipx, b->ipx, 10) == 0)
+		{
+			return qtrue;
+		}
+		return qfalse;
+	}
+#endif
 #ifdef USE_IPV6
 	else if (a->type == NA_IP6)
 	{
@@ -976,7 +986,7 @@ static SOCKET NET_IPSocket( const char *net_interface, int port, int *err ) {
 		Com_Printf( "Opening IP socket: 0.0.0.0:%i\n", port );
 	}
 
-	if( ( newsocket = socket( PF_INET, SOCK_DGRAM, IPPROTO_UDP ) ) == INVALID_SOCKET ) {
+	if( ( newsocket = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP ) ) == INVALID_SOCKET ) {
 		*err = socketError;
 		Com_Printf( "WARNING: NET_IPSocket: socket: %s\n", NET_ErrorString() );
 		return newsocket;
